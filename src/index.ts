@@ -79,6 +79,12 @@ const Commands = [
                 .setRequired(false)
                 .setMaxValue(1000)
                 .setMinValue(1),
+        )
+        .addStringOption((Option) =>
+            Option.setName("note")
+                .setDescription("The note to filter by (default: null)")
+                .setRequired(false)
+                .setMaxLength(255),
         ),
     new SlashCommandBuilder()
         .setName("set_status")

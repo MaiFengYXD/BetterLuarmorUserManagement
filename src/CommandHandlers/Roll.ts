@@ -1,16 +1,26 @@
 import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js"
 import { Database } from "../Database/index.ts"
 import { LuarmorUsers } from "../Database/Schema.ts"
-import { eq, inArray } from "drizzle-orm"
+import { and, eq, inArray } from "drizzle-orm"
 import RequestLuarmorAPI from "../Utilities/RequestLuarmorAPI.ts"
 
 export default async function Roll(Interaction: ChatInputCommandInteraction) {
     const Amount = Math.min(Math.max(Interaction.options.getNumber("amount") ?? 1, 1), 1000)
-    const Keys = await Database.select().from(LuarmorUsers).where(eq(LuarmorUsers.status, "unused")).limit(Amount)
+    const Note = Interaction.options.getString("note")?.slice(0, 255)
+
+    const Keys = await Database.select()
+        .from(LuarmorUsers)
+        .where(
+            Note
+                ? and(eq(LuarmorUsers.status, "unused"), eq(LuarmorUsers.note, Note))
+                : eq(LuarmorUsers.status, "unused"),
+        )
+        .limit(Amount)
 
     const ImportKeysData = {
         users: Keys.map((Row) => ({
             user_key: Row.user_key,
+            note: Row.note,
         })),
     }
 
