@@ -5,7 +5,7 @@ import { eq, inArray } from "drizzle-orm"
 import RequestLuarmorAPI from "../Utilities/RequestLuarmorAPI.ts"
 
 export default async function Roll(Interaction: ChatInputCommandInteraction) {
-    const Amount = Interaction.options.getNumber("amount") ?? 1
+    const Amount = Math.min(Math.max(Interaction.options.getNumber("amount") ?? 1, 1), 1000)
     const Keys = await Database.select().from(LuarmorUsers).where(eq(LuarmorUsers.status, "unused")).limit(Amount)
 
     const ImportKeysData = {
