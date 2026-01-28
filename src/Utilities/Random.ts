@@ -1,16 +1,21 @@
-import { randomBytes, randomFillSync } from "crypto"
+import { randomFillSync } from "crypto"
 
 const Alphabets = Buffer.from("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+const Mask = 208 // 256 - (256 % Alphabets.length)
 
 export function RandomAlphabetString(Length: number) {
-    const Bytes = randomFillSync(Buffer.allocUnsafe(Length))
     const Result = Buffer.allocUnsafe(Length)
+    const EntropySource = Buffer.allocUnsafe(128)
 
-    for (let Index = 0; Index < Length; Index++) {
-        let Byte = Bytes[Index]
-        while (Byte >= 208) Byte = randomBytes(1)[0]
+    let Cursor = 0
 
-        Result[Index] = Alphabets[Byte % 52]
+    while (Cursor < Length) {
+        randomFillSync(EntropySource)
+
+        for (let Index = 0; Index < Length && Cursor < Length; Index++) {
+            const Byte = EntropySource[Index]
+            if (Byte < Mask) Result[Cursor++] = Alphabets[Byte % 52]
+        }
     }
 
     return Result.toString("ascii")
