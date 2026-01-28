@@ -21,5 +21,6 @@ export const LuarmorUsers = sqliteTable(
         index_used: index("index_used")
             .on(Table.status)
             .where(sql`status = 'used'`),
+        index_note: index("index_note").on(Table.note),
     }),
 )
