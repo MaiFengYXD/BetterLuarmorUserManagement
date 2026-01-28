@@ -5,7 +5,7 @@ import { LuarmorUsers } from "../Database/Schema.ts"
 
 export default async function Generate(Interaction: ChatInputCommandInteraction) {
     const Amount = Math.max(Interaction.options.getNumber("amount") ?? 1, 1)
-    const Note = Interaction.options.getString("note")
+    const Note = Interaction.options.getString("note")?.slice(0, 255)
 
     const GeneratedKeys = Array.from({ length: Amount }, () => RandomAlphabetString(32))
 
