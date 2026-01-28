@@ -96,6 +96,7 @@ const Commands = [
                 .setRequired(true)
                 .addChoices(...StatusChoices),
         ),
+    new SlashCommandBuilder().setName("update").setDescription("Update issued keys immediately."),
 ].map((Command) => Command.toJSON())
 
 DiscordClient.once(Events.ClientReady, async () => {
