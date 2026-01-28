@@ -3,7 +3,6 @@ import { Database } from "../Database/index.ts"
 import { LuarmorUsers } from "../Database/Schema.ts"
 import RequestLuarmorAPI from "./RequestLuarmorAPI.ts"
 
-let Interval: NodeJS.Timeout
 let _IsUpdating = false
 
 function CaseStatus(Status: "reset" | "active" | "banned"): "used" | "unused" {
@@ -19,11 +18,7 @@ function CaseStatus(Status: "reset" | "active" | "banned"): "used" | "unused" {
     }
 }
 
-function StopInterval() {
-    if (Interval) clearInterval(Interval)
-}
-
-async function UpdateIssuedKeytatuses(Key?: string) {
+export async function UpdateIssuedKey(Key?: string) {
     if (_IsUpdating) return
     _IsUpdating = true
 
@@ -83,17 +78,4 @@ async function UpdateIssuedKeytatuses(Key?: string) {
     }
 }
 
-function StartInterval() {
-    StopInterval()
-    Interval = setInterval(UpdateIssuedKeytatuses, 5 * 60 * 1000)
-}
-
-export async function UpdateIssuedKey(Key?: string) {
-    StopInterval()
-    await UpdateIssuedKeytatuses(Key)
-    StartInterval()
-}
-
 export const IsUpdating = () => _IsUpdating
-
-await UpdateIssuedKey()
