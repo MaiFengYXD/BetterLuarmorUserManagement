@@ -55,8 +55,8 @@ export default async function Roll(Interaction: ChatInputCommandInteraction) {
     await Interaction.editReply({
         content:
             Keys.length < Amount
-                ? `⚠️ Expected **${Amount}** unused keys, but only **${Keys.length}** unused keys were found in the database.`
-                : `Rolled **${Amount}** unused keys.`,
+                ? `⚠️ Expected **${Amount}** unused key(s), but only **${Keys.length}** were found in the database.`
+                : `🎲 Rolled **${Amount}** unused key(s).`,
         files: [new AttachmentBuilder(Buffer.from(KeysText), { name: `${Amount}_unused_keys.txt` })],
     })
 }
