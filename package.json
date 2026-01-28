@@ -1,0 +1,29 @@
+{
+    "name": "better-luarmor-user-management",
+    "version": "0.1.0",
+    "private": true,
+    "author": "MikeFeng",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MaiFengYXD/BetterLuarmorUserManagement.git"
+    },
+    "type": "module",
+    "scripts": {
+        "start": "tsx src/index.ts"
+    },
+    "dependencies": {
+        "@libsql/client": "^0.17.0",
+        "discord.js": "^14.25.1",
+        "dotenv": "^17.2.3",
+        "drizzle-orm": "^0.45.1"
+    },
+    "overrides": {
+        "undici": "6.23.0",
+        "esbuild": "^0.25.0"
+    },
+    "devDependencies": {
+        "drizzle-kit": "^0.31.8",
+        "tsx": "^4.21.0"
+    }
+}
