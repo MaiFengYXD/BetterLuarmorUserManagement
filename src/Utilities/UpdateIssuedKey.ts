@@ -5,10 +5,10 @@ import RequestLuarmorAPI from "./RequestLuarmorAPI.ts"
 
 let _IsUpdating = false
 
-function CaseStatus(Status: "reset" | "active" | "banned"): "used" | "unused" {
+function CaseStatus(Status: "reset" | "active" | "banned", DiscordId: string): "used" | "unused" {
     switch (Status) {
         case "reset":
-            return "unused"
+            return DiscordId.length === 0 ? "unused" : "used"
         case "active":
             return "used"
         case "banned":
@@ -40,7 +40,7 @@ export async function UpdateIssuedKey(Key?: string) {
         const ResponseJson = (await APIResponse.json()) as {
             success: boolean
             message: string
-            users: { user_key: string; status: "active" | "reset" | "banned"; note: string }[]
+            users: { user_key: string; status: "active" | "reset" | "banned"; note: string; discord_id: string }[]
         }
 
         if (!ResponseJson.success) throw `Luarmor API internal error: ${ResponseJson.message ?? ResponseJson}`
@@ -51,7 +51,7 @@ export async function UpdateIssuedKey(Key?: string) {
         const ChangedKeys = ResponseJson.users
             .map((User) => ({
                 user_key: User.user_key,
-                status: CaseStatus(User.status),
+                status: CaseStatus(User.status, User.discord_id),
                 note: User.note.length === 0 ? undefined : User.note,
             }))
             .filter((Item) => {

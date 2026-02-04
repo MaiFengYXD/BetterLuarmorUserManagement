@@ -8,7 +8,7 @@ export default async function Update(Interaction: ChatInputCommandInteraction) {
         })
     }
 
-    await UpdateIssuedKey()
+    await UpdateIssuedKey(Interaction.options.getString("key") ?? undefined)
     await Interaction.editReply({
         content: "✅ Updated issued keys.",
     })

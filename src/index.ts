@@ -96,7 +96,12 @@ const Commands = [
                 .setRequired(true)
                 .addChoices(...StatusChoices),
         ),
-    new SlashCommandBuilder().setName("update").setDescription("Update issued keys immediately."),
+    new SlashCommandBuilder()
+        .setName("update")
+        .setDescription("Update issued keys immediately.")
+        .addStringOption((Option) =>
+            Option.setName("key").setDescription("The key to update (default: all issued keys)").setRequired(false),
+        ),
 ].map((Command) => Command.toJSON())
 
 DiscordClient.once(Events.ClientReady, async () => {
@@ -138,28 +143,18 @@ DiscordClient.on(Events.InteractionCreate, async (Interaction) => {
                 )
             }
 
-            if (!AccessAllowed) {
-                return await Interaction.reply({
-                    content: "❌ You do not have permission to use this bot.",
-                    flags: MessageFlags.Ephemeral,
-                })
-            }
+            if (!AccessAllowed) return
         }
 
         const CommandHandler = CommandHandlers[Interaction.commandName as keyof typeof CommandHandlers]
-        if (CommandHandler) {
-            await Interaction.reply({
-                content: "⏳ Processing...",
-                flags: MessageFlags.Ephemeral,
-            })
+        if (!CommandHandler) return
 
-            await CommandHandler(Interaction)
-        } else {
-            await Interaction.reply({
-                content: "❌ Unknown command.",
-                flags: MessageFlags.Ephemeral,
-            })
-        }
+        await Interaction.reply({
+            content: "⏳ Processing...",
+            flags: MessageFlags.Ephemeral,
+        })
+
+        await CommandHandler(Interaction)
     } catch (Error) {
         console.error(Error)
     }

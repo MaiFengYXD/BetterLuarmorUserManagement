@@ -22,7 +22,7 @@ export default async function Generate(Interaction: ChatInputCommandInteraction)
         await Interaction.editReply({
             content:
                 Result.rowsAffected < Amount
-                    ? `⚠️ Generated **${Amount}** keys but only **${Result.rowsAffected}** were unique! Which is a 1/52³² chance of collision BRO UDD🤯🤯.\nPlease regenerate if needed.`
+                    ? `⚠️ Generated **${Amount}** keys but only **${Result.rowsAffected}** were unique! **Which is a 1/52³² chance of collision BRO UDD🤯🤯**.\nPlease regenerate if needed.`
                     : `✅ Generated **${Amount}** keys.`,
         })
     } else {

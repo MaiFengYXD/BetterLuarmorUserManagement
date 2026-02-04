@@ -17,6 +17,12 @@ export default async function Roll(Interaction: ChatInputCommandInteraction) {
         )
         .limit(Amount)
 
+    if (Keys.length === 0) {
+        return await Interaction.editReply({
+            content: `❌ No unused keys found in the database.`,
+        })
+    }
+
     const ImportKeysData = {
         users: Keys.map((Row) => ({
             user_key: Row.user_key,
