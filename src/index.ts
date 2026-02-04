@@ -149,8 +149,7 @@ DiscordClient.on(Events.InteractionCreate, async (Interaction) => {
         const CommandHandler = CommandHandlers[Interaction.commandName as keyof typeof CommandHandlers]
         if (!CommandHandler) return
 
-        await Interaction.reply({
-            content: "⏳ Processing...",
+        await Interaction.deferReply({
             flags: MessageFlags.Ephemeral,
         })
 
